@@ -1,12 +1,17 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Updater, CommandHandler
+import os
 
-TOKEN = "8004438645:AAHpRbSxrEk6Qf0MazH5EJn63EgJcEsoWjY"
+TOKEN = os.environ['BOT_TOKEN']
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🎯 Welcome to Hi5 Premium Tips!")
+def start(update, context):
+    update.message.reply_text('Hello! Welcome to Hi5 Premium Tips.')
+
+def main():
+    updater = Updater(token=TOKEN, use_context=True)
+    dp = updater.dispatcher
+    dp.add_handler(CommandHandler("start", start))
+    updater.start_polling()
+    updater.idle()
 
 if __name__ == '__main__':
-    app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.run_polling()
+    main()
